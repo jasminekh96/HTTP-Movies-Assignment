@@ -5,27 +5,22 @@ const initialMovie = {
 	title     : '',
 	director  : '',
 	metascore : '',
-	stars     : '',
+	stars     : [],
 };
 const UpdateForm = (props) => {
 	const [ movies, setMovies ] = useState(initialMovie);
 	const changeHandler = (e) => {
+		// e.persist();
+		// let value = e.target.value;
+		// if (e.target.name === 'metascore') {
+		// 	value = parseInt(value, 10);
+		// }
 		setMovies({
 			...movies,
 			[e.target.name]: e.target.value,
 		});
 	};
-	// const changeHandler = (e) => {
-	// 	e.persist();
-	// 	let value = e.target.value;
-	// 	if (e.target.name === 'title') {
-	// 		value = parseInt(value);
-	// 	}
-	// 	setMovies({
-	// 		...movies,
-	// 		[e.target.name]: value,
-	// 	});
-	// };
+
 	useEffect(
 		() => {
 			Axios.get(`http://localhost:5000/api/movies/${props.match.params.id}`)
@@ -40,9 +35,9 @@ const UpdateForm = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		Axios.put(`http://localhost:5000/api/movies${props.match.params.id}`, movies)
+		Axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies)
 			.then((res) => {
-				// props.updateMovies(res.data);
+				// props.updateSavedList([ ...setMovies, res.data ]);
 				props.history.push('/');
 			})
 			.catch((err) => console.log(err));
@@ -64,7 +59,7 @@ const UpdateForm = (props) => {
 					placeholder='Metascore'
 					value={movies.metascore}
 				/>
-				<input type='text' name='stars' onChange={changeHandler} placeholder='Stars' value={movies.stars} />
+				{/* <input type='text' name='stars' onChange={changeHandler} placeholder='Stars' value={movies.stars} /> */}
 				<button>Update Movie</button>
 			</form>
 		</div>
